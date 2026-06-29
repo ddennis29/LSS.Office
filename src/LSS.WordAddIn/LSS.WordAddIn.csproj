@@ -49,6 +49,7 @@
     <Compile Include="ThisAddIn.cs" />
     <Compile Include="Bootstrap\AddInBootstrapper.cs" />
     <Compile Include="Bootstrap\ServiceRegistration.cs" />
+    <Compile Include="Commands\CommandIds.cs" />
     <Compile Include="Commands\DiagnosticsCommand.cs" />
     <Compile Include="Commands\InsertDiagnosticTextCommand.cs" />
     <Compile Include="Ribbon\LssRibbon.cs" />

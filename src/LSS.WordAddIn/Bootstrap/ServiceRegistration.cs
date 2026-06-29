@@ -14,6 +14,9 @@ using Word = Microsoft.Office.Interop.Word;
 
 namespace LSS.WordAddIn.Bootstrap;
 
+/// <summary>
+/// Central dependency registration for the Word add-in host.
+/// </summary>
 public static class ServiceRegistration
 {
     public static IServiceCollection AddLssOfficeServices(
@@ -25,6 +28,7 @@ public static class ServiceRegistration
         services.AddSingleton(application);
         services.AddSingleton<IAppLogger>(_ => new FileAppLogger(logFile));
         services.AddSingleton<ISettingsService>(_ => new JsonSettingsService(settingsFile));
+        services.AddSingleton<ICommandRegistry>(_ => BuildCommandRegistry());
         services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
         services.AddSingleton<IDiagnosticsService, DiagnosticsService>();
         services.AddSingleton<IWordApplicationService, WordApplicationService>();
@@ -34,5 +38,13 @@ public static class ServiceRegistration
         services.AddTransient<DiagnosticsCommand>();
         services.AddTransient<InsertDiagnosticTextCommand>();
         return services;
+    }
+
+    private static ICommandRegistry BuildCommandRegistry()
+    {
+        var registry = new CommandRegistry();
+        registry.Register<DiagnosticsCommand>(CommandIds.Diagnostics);
+        registry.Register<InsertDiagnosticTextCommand>(CommandIds.InsertDiagnosticText);
+        return registry;
     }
 }

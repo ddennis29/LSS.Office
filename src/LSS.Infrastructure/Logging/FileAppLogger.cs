@@ -1,11 +1,16 @@
+using System;
+using System.IO;
 using LSS.Core.Logging;
 
 namespace LSS.Infrastructure.Logging;
 
+/// <summary>
+/// Lightweight file logger used before a full logging pipeline is introduced.
+/// </summary>
 public sealed class FileAppLogger : IAppLogger
 {
     private readonly string _logFilePath;
-    private readonly object _gate = new();
+    private readonly object _gate = new object();
 
     public FileAppLogger(string logFilePath)
     {
@@ -19,9 +24,29 @@ public sealed class FileAppLogger : IAppLogger
 
     private void Write(string level, Exception? exception, string messageTemplate, object[] propertyValues)
     {
-        var message = propertyValues.Length == 0 ? messageTemplate : string.Format(messageTemplate.Replace("{CommandName}", "{0}"), propertyValues);
+        var message = Format(messageTemplate, propertyValues);
         var line = $"{DateTimeOffset.Now:yyyy-MM-dd HH:mm:ss.fff zzz} [{level}] {message}";
-        if (exception != null) line += Environment.NewLine + exception;
-        lock (_gate) File.AppendAllText(_logFilePath, line + Environment.NewLine);
+        if (exception != null)
+        {
+            line += Environment.NewLine + exception;
+        }
+
+        lock (_gate)
+        {
+            File.AppendAllText(_logFilePath, line + Environment.NewLine);
+        }
+    }
+
+    private static string Format(string messageTemplate, object[] propertyValues)
+    {
+        if (propertyValues.Length == 0)
+        {
+            return messageTemplate;
+        }
+
+        var formatted = messageTemplate
+            .Replace("{CommandName}", "{0}")
+            .Replace("{CommandId}", "{0}");
+        return string.Format(formatted, propertyValues);
     }
 }

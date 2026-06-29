@@ -1,8 +1,14 @@
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using LSS.Core.Settings;
 using Newtonsoft.Json;
 
 namespace LSS.Infrastructure.Settings;
 
+/// <summary>
+/// JSON settings store backed by the user's LocalAppData folder.
+/// </summary>
 public sealed class JsonSettingsService : ISettingsService
 {
     private readonly string _settingsPath;
@@ -24,8 +30,12 @@ public sealed class JsonSettingsService : ISettingsService
             return Current;
         }
 
-        var json = await File.ReadAllTextAsync(_settingsPath, cancellationToken).ConfigureAwait(false);
-        Current = JsonConvert.DeserializeObject<AppSettings>(json) ?? new AppSettings();
+        using (var reader = new StreamReader(_settingsPath))
+        {
+            var json = await reader.ReadToEndAsync().ConfigureAwait(false);
+            Current = JsonConvert.DeserializeObject<AppSettings>(json) ?? new AppSettings();
+        }
+
         return Current;
     }
 
@@ -33,6 +43,9 @@ public sealed class JsonSettingsService : ISettingsService
     {
         Current = settings;
         var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
-        await File.WriteAllTextAsync(_settingsPath, json, cancellationToken).ConfigureAwait(false);
+        using (var writer = new StreamWriter(_settingsPath, false))
+        {
+            await writer.WriteAsync(json).ConfigureAwait(false);
+        }
     }
 }

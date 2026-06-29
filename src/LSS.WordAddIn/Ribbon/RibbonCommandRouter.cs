@@ -1,13 +1,16 @@
 using System;
-using System.Threading.Tasks;
 using LSS.Core.Commands;
 using LSS.Core.Dialogs;
+using LSS.Core.Logging;
 using LSS.WordAddIn.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Office = Microsoft.Office.Core;
 
 namespace LSS.WordAddIn.Ribbon;
 
+/// <summary>
+/// Routes Office Ribbon callbacks into the command dispatcher.
+/// </summary>
 public sealed class RibbonCommandRouter
 {
     private readonly Func<IServiceProvider> _serviceProviderFactory;
@@ -17,33 +20,39 @@ public sealed class RibbonCommandRouter
         _serviceProviderFactory = serviceProviderFactory;
     }
 
-    public void OnDiagnosticsClicked(Office.IRibbonControl control)
-    {
-        Execute<DiagnosticsCommand>();
-    }
+    public void OnDiagnosticsClicked(Office.IRibbonControl control) => Execute(CommandIds.Diagnostics);
 
-    public void OnInsertDiagnosticTextClicked(Office.IRibbonControl control)
-    {
-        Execute<InsertDiagnosticTextCommand>();
-    }
+    public void OnInsertDiagnosticTextClicked(Office.IRibbonControl control) => Execute(CommandIds.InsertDiagnosticText);
 
     public bool IsEnabled(Office.IRibbonControl control)
     {
-        return true;
+        if (control is null)
+        {
+            return false;
+        }
+
+        return control.Id switch
+        {
+            "btnDiagnostics" => true,
+            "btnInsertDiagnosticText" => true,
+            _ => false
+        };
     }
 
-    private void Execute<TCommand>() where TCommand : ICommand
+    private void Execute(string commandId)
     {
+        IServiceProvider? services = null;
         try
         {
-            var services = _serviceProviderFactory();
+            services = _serviceProviderFactory();
             var dispatcher = services.GetRequiredService<ICommandDispatcher>();
-            dispatcher.ExecuteAsync<TCommand>().GetAwaiter().GetResult();
+            dispatcher.ExecuteAsync(commandId).GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {
-            var dialog = _serviceProviderFactory().GetService<IMessageDialogService>();
-            dialog?.ShowError(ex);
+            services ??= _serviceProviderFactory();
+            services.GetService<IAppLogger>()?.Error(ex, "Ribbon command failed: {CommandId}", commandId);
+            services.GetService<IMessageDialogService>()?.ShowError(ex);
         }
     }
 }

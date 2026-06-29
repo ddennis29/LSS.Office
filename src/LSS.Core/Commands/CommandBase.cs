@@ -1,15 +1,21 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using LSS.Core.Logging;
 
 namespace LSS.Core.Commands;
 
+/// <summary>
+/// Base command implementation that provides consistent logging and error handling.
+/// </summary>
 public abstract class CommandBase : ICommand
 {
     private readonly IAppLogger _logger;
 
     protected CommandBase(string name, IAppLogger logger)
     {
-        Name = name;
-        _logger = logger;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public string Name { get; }

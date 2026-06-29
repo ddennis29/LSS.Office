@@ -3,6 +3,9 @@ using Word = Microsoft.Office.Interop.Word;
 
 namespace LSS.Word.Interop;
 
+/// <summary>
+/// Word document wrapper. Office COM access should stay inside this layer.
+/// </summary>
 public sealed class WordDocumentService : IWordDocumentService
 {
     private readonly Word.Application _application;
@@ -12,18 +15,15 @@ public sealed class WordDocumentService : IWordDocumentService
         _application = application ?? throw new ArgumentNullException(nameof(application));
     }
 
-    public string? GetActiveDocumentName()
-    {
-        return _application.Documents.Count == 0 ? null : _application.ActiveDocument.Name;
-    }
+    public int GetDocumentCount() => _application.Documents.Count;
 
-    public string? GetActiveDocumentPath()
-    {
-        return _application.Documents.Count == 0 ? null : _application.ActiveDocument.FullName;
-    }
+    public bool HasActiveDocument() => _application.Documents.Count > 0;
 
-    public int GetParagraphCount()
-    {
-        return _application.Documents.Count == 0 ? 0 : _application.ActiveDocument.Paragraphs.Count;
-    }
+    public string? GetActiveDocumentName() => HasActiveDocument() ? _application.ActiveDocument.Name : null;
+
+    public string? GetActiveDocumentPath() => HasActiveDocument() ? _application.ActiveDocument.FullName : null;
+
+    public int GetParagraphCount() => HasActiveDocument() ? _application.ActiveDocument.Paragraphs.Count : 0;
+
+    public int GetTableCount() => HasActiveDocument() ? _application.ActiveDocument.Tables.Count : 0;
 }
