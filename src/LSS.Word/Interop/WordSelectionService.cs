@@ -1,4 +1,5 @@
 using System;
+using LSS.Word.Models;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace LSS.Word.Interop;
@@ -18,6 +19,22 @@ public sealed class WordSelectionService : IWordSelectionService
     public bool HasSelection() => _application.Selection is not null;
 
     public string GetSelectedText() => _application.Selection?.Text ?? string.Empty;
+
+    public WordSelectionSnapshot GetSnapshot()
+    {
+        var selection = _application.Selection;
+        if (selection is null)
+        {
+            return new WordSelectionSnapshot(false, string.Empty, 0, 0, 0);
+        }
+
+        return new WordSelectionSnapshot(
+            true,
+            selection.Text ?? string.Empty,
+            selection.Start,
+            selection.End,
+            (int)selection.StoryType);
+    }
 
     public void ReplaceSelectedText(string text)
     {

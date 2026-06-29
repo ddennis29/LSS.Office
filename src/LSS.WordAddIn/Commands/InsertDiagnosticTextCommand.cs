@@ -9,6 +9,7 @@ namespace LSS.WordAddIn.Commands;
 /// <summary>
 /// Inserts a small verification message into the active Word selection.
 /// </summary>
+[Command(CommandIds.InsertDiagnosticText, "Insert Test Text", "Diagnostics", Description = "Inserts verification text into the current selection.")]
 public sealed class InsertDiagnosticTextCommand : CommandBase
 {
     private readonly IWordSelectionService _selectionService;

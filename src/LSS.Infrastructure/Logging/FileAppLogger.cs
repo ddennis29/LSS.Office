@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using LSS.Core.Logging;
 
 namespace LSS.Infrastructure.Logging;
@@ -9,6 +10,7 @@ namespace LSS.Infrastructure.Logging;
 /// </summary>
 public sealed class FileAppLogger : IAppLogger
 {
+    private static readonly Regex NamedTokenRegex = new Regex("\\{[A-Za-z_][A-Za-z0-9_]*\\}", RegexOptions.Compiled);
     private readonly string _logFilePath;
     private readonly object _gate = new object();
 
@@ -44,9 +46,15 @@ public sealed class FileAppLogger : IAppLogger
             return messageTemplate;
         }
 
-        var formatted = messageTemplate
-            .Replace("{CommandName}", "{0}")
-            .Replace("{CommandId}", "{0}");
-        return string.Format(formatted, propertyValues);
+        var index = 0;
+        var formatted = NamedTokenRegex.Replace(messageTemplate, _ => "{" + index++ + "}");
+        try
+        {
+            return string.Format(formatted, propertyValues);
+        }
+        catch (FormatException)
+        {
+            return messageTemplate + " " + string.Join(", ", propertyValues);
+        }
     }
 }

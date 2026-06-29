@@ -23,3 +23,17 @@
 
 ### Known Issues
 - This package was generated in a Linux container without the .NET SDK or Visual Studio/VSTO targets installed, so the solution could not be locally compiled here. It is structured for Visual Studio 2022 on Windows.
+## 1.3.0 - Sprint 1.3 Word SDK Boundary and Developer Mode
+
+### Added
+- Command metadata and attribute-based command registration.
+- Host environment abstraction for settings and logging paths.
+- Word document, selection, and range snapshot services.
+- Word diagnostics service.
+- Developer Ribbon group with command browser, selection inspector, and developer-mode toggle.
+- GitHub Actions build workflow for Windows/MSBuild.
+
+### Changed
+- Diagnostics window now includes runtime paths, command metadata, and Word-specific tabs.
+- Application version updated to 1.3.0.
+

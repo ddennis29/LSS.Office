@@ -7,6 +7,7 @@ using LSS.Infrastructure.Diagnostics;
 using LSS.Infrastructure.Logging;
 using LSS.Infrastructure.Settings;
 using LSS.UI.Dialogs;
+using LSS.Word.Diagnostics;
 using LSS.Word.Interop;
 using LSS.WordAddIn.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,17 +35,25 @@ public static class ServiceRegistration
         services.AddSingleton<IWordApplicationService, WordApplicationService>();
         services.AddSingleton<IWordDocumentService, WordDocumentService>();
         services.AddSingleton<IWordSelectionService, WordSelectionService>();
+        services.AddSingleton<IWordRangeService, WordRangeService>();
+        services.AddSingleton<IWordDiagnosticsService, WordDiagnosticsService>();
         services.AddSingleton<IMessageDialogService, MessageDialogService>();
         services.AddTransient<DiagnosticsCommand>();
         services.AddTransient<InsertDiagnosticTextCommand>();
+        services.AddTransient<ToggleDeveloperModeCommand>();
+        services.AddTransient<ShowCommandBrowserCommand>();
+        services.AddTransient<ShowSelectionInspectorCommand>();
         return services;
     }
 
     private static ICommandRegistry BuildCommandRegistry()
     {
         var registry = new CommandRegistry();
-        registry.Register<DiagnosticsCommand>(CommandIds.Diagnostics);
-        registry.Register<InsertDiagnosticTextCommand>(CommandIds.InsertDiagnosticText);
+        registry.Register<DiagnosticsCommand>();
+        registry.Register<InsertDiagnosticTextCommand>();
+        registry.Register<ToggleDeveloperModeCommand>();
+        registry.Register<ShowCommandBrowserCommand>();
+        registry.Register<ShowSelectionInspectorCommand>();
         return registry;
     }
 }

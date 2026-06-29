@@ -1,3 +1,5 @@
+using LSS.Word.Models;
+
 namespace LSS.Word.Interop;
 
 /// <summary>
@@ -10,5 +12,7 @@ public interface IWordDocumentService
     string? GetActiveDocumentPath();
     int GetParagraphCount();
     int GetTableCount();
+    int GetWordCount();
     bool HasActiveDocument();
+    WordDocumentSnapshot GetSnapshot();
 }

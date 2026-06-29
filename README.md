@@ -33,3 +33,8 @@ This repository contains the initial Visual Studio 2022 solution foundation for 
 ## First test
 
 Open `LSS.Office.sln` in Visual Studio 2022, restore NuGet packages, set `LSS.WordAddIn` as the startup project, and press F5. The Ribbon XML includes an **LSS Office** tab with a diagnostic button.
+
+
+## Sprint 1.3
+
+This snapshot adds the Word SDK boundary, command metadata, developer-mode diagnostics, and a Windows/MSBuild GitHub Actions workflow.

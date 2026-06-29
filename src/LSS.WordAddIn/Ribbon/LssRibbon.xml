@@ -7,6 +7,11 @@
           <button id="btnDiagnostics" label="Diagnostics" size="large" imageMso="Info" onAction="OnDiagnosticsClicked" getEnabled="IsEnabled" />
           <button id="btnInsertDiagnosticText" label="Insert Test Text" imageMso="TextBoxInsert" onAction="OnInsertDiagnosticTextClicked" getEnabled="IsEnabled" />
         </group>
+        <group id="grpDeveloper" label="Developer">
+          <button id="btnCommandBrowser" label="Command Browser" imageMso="ListMacros" onAction="OnCommandBrowserClicked" getEnabled="IsDeveloperEnabled" />
+          <button id="btnSelectionInspector" label="Selection Inspector" imageMso="ResearchPane" onAction="OnSelectionInspectorClicked" getEnabled="IsDeveloperEnabled" />
+          <button id="btnToggleDeveloperMode" label="Toggle Dev Mode" imageMso="ControlProperties" onAction="OnToggleDeveloperModeClicked" getEnabled="IsEnabled" />
+        </group>
         <group id="grpBridge" label="Bridge">
           <button id="btnBridgeCodeSections" label="Bridge Code Sections" imageMso="TableOfContentsGallery" enabled="false" />
         </group>

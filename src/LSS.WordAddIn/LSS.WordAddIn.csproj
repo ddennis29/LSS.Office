@@ -52,6 +52,9 @@
     <Compile Include="Commands\CommandIds.cs" />
     <Compile Include="Commands\DiagnosticsCommand.cs" />
     <Compile Include="Commands\InsertDiagnosticTextCommand.cs" />
+    <Compile Include="Commands\ShowSelectionInspectorCommand.cs" />
+    <Compile Include="Commands\ShowCommandBrowserCommand.cs" />
+    <Compile Include="Commands\ToggleDeveloperModeCommand.cs" />
     <Compile Include="Ribbon\LssRibbon.cs" />
     <Compile Include="Ribbon\RibbonCommandRouter.cs" />
   </ItemGroup>

@@ -1,3 +1,5 @@
+using LSS.Word.Models;
+
 namespace LSS.Word.Interop;
 
 /// <summary>
@@ -9,4 +11,5 @@ public interface IWordSelectionService
     void ReplaceSelectedText(string text);
     void InsertText(string text);
     bool HasSelection();
+    WordSelectionSnapshot GetSnapshot();
 }

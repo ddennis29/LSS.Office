@@ -1,4 +1,5 @@
 using System;
+using LSS.Word.Models;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace LSS.Word.Interop;
@@ -26,4 +27,24 @@ public sealed class WordDocumentService : IWordDocumentService
     public int GetParagraphCount() => HasActiveDocument() ? _application.ActiveDocument.Paragraphs.Count : 0;
 
     public int GetTableCount() => HasActiveDocument() ? _application.ActiveDocument.Tables.Count : 0;
+
+    public int GetWordCount() => HasActiveDocument() ? _application.ActiveDocument.Words.Count : 0;
+
+    public WordDocumentSnapshot GetSnapshot()
+    {
+        if (!HasActiveDocument())
+        {
+            return new WordDocumentSnapshot(false, string.Empty, string.Empty, 0, 0, 0, true);
+        }
+
+        var document = _application.ActiveDocument;
+        return new WordDocumentSnapshot(
+            true,
+            document.Name ?? string.Empty,
+            document.FullName ?? string.Empty,
+            document.Paragraphs.Count,
+            document.Tables.Count,
+            document.Words.Count,
+            document.Saved);
+    }
 }
