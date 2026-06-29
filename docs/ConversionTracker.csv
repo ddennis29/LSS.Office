@@ -1,0 +1,37 @@
+Type,Name,ProcedureCount,Status,Notes
+VBA Module,CallBacks,0,Pending,Imported from lss_main.docm extraction
+VBA Module,EventClass,3,Pending,Imported from lss_main.docm extraction
+VBA Module,GetAbend,1,Pending,Imported from lss_main.docm extraction
+VBA Module,Insert,0,Pending,Imported from lss_main.docm extraction
+VBA Module,LSS_Wrapper,2,Pending,Imported from lss_main.docm extraction
+VBA Module,M_File,0,Pending,Imported from lss_main.docm extraction
+VBA Module,Miscellaneous,0,Pending,Imported from lss_main.docm extraction
+VBA Module,ReqTrk,5,Pending,Imported from lss_main.docm extraction
+VBA Module,Rulings,0,Pending,Imported from lss_main.docm extraction
+VBA Module,SharedCode,0,Pending,Imported from lss_main.docm extraction
+VBA Module,ThisDocument,0,Pending,Imported from lss_main.docm extraction
+VBA Module,Utilities,1,Pending,Imported from lss_main.docm extraction
+Class Module,clsRepealed,0,Pending,Imported from lss_main.docm extraction
+Class Module,clsSelected,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmAmendAuthors,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmBridge,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmBridgeConst,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmCompare_Documents,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmCreateInsert,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmDeleteStyle,2,Pending,Imported from lss_main.docm extraction
+UserForm,frmEmail,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmEmailMulitple,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmInsertASection,5,Pending,Imported from lss_main.docm extraction
+UserForm,frmMeasure,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmNew,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmOpen,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmP_A_W,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmProcPrompt,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmProcPrompt_2012Feb2,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmRequest,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmRevisionsAcceptReject,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmRulings,7,Pending,Imported from lss_main.docm extraction
+UserForm,frmRulingsCreate,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmSimpleOpen,3,Pending,Imported from lss_main.docm extraction
+UserForm,frmStdText,0,Pending,Imported from lss_main.docm extraction
+UserForm,frmUpdateCS,0,Pending,Imported from lss_main.docm extraction

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestAdapter" Version="3.5.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.5.2" />
+    <ProjectReference Include="..\..\src\LSS.Core\LSS.Core.csproj" />
+    <ProjectReference Include="..\..\src\LSS.Infrastructure\LSS.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
