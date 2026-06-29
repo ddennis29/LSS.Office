@@ -1,30 +1,37 @@
 using System.Threading;
 using System.Threading.Tasks;
 using LSS.Core.Commands;
-using LSS.Core.Logging;
-using LSS.UI.Dialogs;
+using LSS.Core.Diagnostics;
+using LSS.UI.Diagnostics;
 using LSS.Word.Interop;
 
 namespace LSS.WordAddIn.Commands;
 
-public sealed class DiagnosticsCommand : CommandBase
+public sealed class DiagnosticsCommand : ICommand
 {
-    private readonly IWordApplicationService _word;
-    private readonly IMessageDialogService _dialogs;
+    private readonly IDiagnosticsService _diagnosticsService;
+    private readonly IWordDocumentService _wordDocumentService;
 
-    public DiagnosticsCommand(IAppLogger logger, IWordApplicationService word, IMessageDialogService dialogs)
-        : base("Diagnostics", logger)
+    public DiagnosticsCommand(IDiagnosticsService diagnosticsService, IWordDocumentService wordDocumentService)
     {
-        _word = word;
-        _dialogs = dialogs;
+        _diagnosticsService = diagnosticsService;
+        _wordDocumentService = wordDocumentService;
     }
 
-    protected override Task ExecuteCoreAsync(CancellationToken cancellationToken)
+    public Task ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        var docName = _word.GetActiveDocumentName();
-        _dialogs.ShowInformation("LSS Office Suite", string.IsNullOrWhiteSpace(docName)
-            ? "LSS Office Suite is loaded. No active document was detected."
-            : $"LSS Office Suite is loaded. Active document: {docName}");
+        var lines = new System.Collections.Generic.List<string>(_diagnosticsService.GetStartupReport())
+        {
+            string.Empty,
+            "Word Document",
+            "-------------",
+            $"Name: {_wordDocumentService.GetActiveDocumentName() ?? "No active document"}",
+            $"Path: {_wordDocumentService.GetActiveDocumentPath() ?? "No active document"}",
+            $"Paragraphs: {_wordDocumentService.GetParagraphCount()}"
+        };
+
+        using var form = new DiagnosticsForm(lines);
+        form.ShowDialog();
         return Task.CompletedTask;
     }
 }

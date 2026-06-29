@@ -1,32 +1,28 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Microsoft.Office.Core;
+using Office = Microsoft.Office.Core;
 
 namespace LSS.WordAddIn.Ribbon;
 
-public sealed class LssRibbon : IRibbonExtensibility
+public sealed class LssRibbon : Office.IRibbonExtensibility
 {
-    private readonly Func<IServiceProvider> _serviceProviderFactory;
-    private IRibbonUI? _ribbon;
+    private readonly RibbonCommandRouter _router;
 
     public LssRibbon(Func<IServiceProvider> serviceProviderFactory)
     {
-        _serviceProviderFactory = serviceProviderFactory;
+        _router = new RibbonCommandRouter(serviceProviderFactory);
     }
 
     public string GetCustomUI(string ribbonId)
     {
         using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("LSS.WordAddIn.Ribbon.LssRibbon.xml");
-        if (stream == null) return string.Empty;
+        if (stream is null) return string.Empty;
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();
     }
 
-    public void OnLoad(IRibbonUI ribbonUi) => _ribbon = ribbonUi;
-
-    public void OnDiagnostics(IRibbonControl control)
-    {
-        RibbonCommandRouter.Execute<Commands.DiagnosticsCommand>(_serviceProviderFactory());
-    }
+    public void OnDiagnosticsClicked(Office.IRibbonControl control) => _router.OnDiagnosticsClicked(control);
+    public void OnInsertDiagnosticTextClicked(Office.IRibbonControl control) => _router.OnInsertDiagnosticTextClicked(control);
+    public bool IsEnabled(Office.IRibbonControl control) => _router.IsEnabled(control);
 }
